@@ -1,22 +1,30 @@
+import React, {useEffect, useState} from "react";
 import logo from './logo.svg';
 import './App.css';
+import {getAgeByName} from "./services/ageApi";
 
 function App() {
+  const [currentNameInfo, setCurrentNameInfo] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(async () => {
+    setCurrentNameInfo(await getAgeByName());
+    setIsLoading(false);
+  }, [])
+
+  if(isLoading) {
+    return (
+        <h1>We Loading</h1>
+    )
+  }
+  console.log(currentNameInfo)
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {currentNameInfo.name} is {currentNameInfo.age}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );
